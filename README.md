@@ -23,3 +23,14 @@ The app was built based on the task description using the following design decis
     * New user registration or updating user settings
     * Note search, filtering, and sorting functionality
     * Note content format validation (e.g. requiring & validating for a specific text format like markdown)
+
+## Database design
+
+* Table user:
+    * id (numeric)
+    * token (textual)
+* Table note:
+    * id (numeric)
+    * userid (numeric, foreign key)
+    * title (textual)
+    * content (textual, optional)
