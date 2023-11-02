@@ -23,6 +23,9 @@ The app was built based on the task description using the following design decis
     * New user registration or updating user settings
     * Note search, filtering, and sorting functionality
     * Note content format validation (e.g. requiring & validating for a specific text format like markdown)
+    * Note sharing with other users or the public
+    * Note content versioning
+    * Restoring deleted notes (e.g. trash folder functionality)
 
 ## Database design
 
