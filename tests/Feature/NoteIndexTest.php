@@ -48,11 +48,15 @@ class NoteIndexTest extends TestCase
             $notes[] = Note::factory()->create([
                 'user_id' => $user->id,
             ]);
+            $this->travel(1)->seconds();
         }
 
         $response = $this->actingAs($user)->getJson('/api/v1/notes');
 
-        $notes = collect($notes)->toArray();
+        $notes = collect($notes)
+            ->reverse()
+            ->values()
+            ->toArray();
         $response
             ->assertStatus(200)
             ->assertJson([
@@ -74,11 +78,14 @@ class NoteIndexTest extends TestCase
             $notes[] = Note::factory()->create([
                 'user_id' => $user->id,
             ]);
+            $this->travel(1)->seconds();
         }
 
         $response = $this->actingAs($user)->getJson('/api/v1/notes');
 
         $notes = collect($notes)
+            ->reverse()
+            ->values()
             ->slice(0, 20)
             ->toArray();
         $response
@@ -102,11 +109,12 @@ class NoteIndexTest extends TestCase
             $notes[] = Note::factory()->create([
                 'user_id' => $user->id,
             ]);
+            $this->travel(1)->seconds();
         }
 
         $response = $this->actingAs($user)->getJson('/api/v1/notes?page=2');
 
-        $notes = collect([$notes[20]])->toArray();
+        $notes = collect([$notes[0]])->toArray();
         $response
             ->assertStatus(200)
             ->assertJson([
