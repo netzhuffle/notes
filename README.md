@@ -41,3 +41,16 @@ The app was built based on the task description using the following design decis
     * userid (numeric, foreign key)
     * title (textual)
     * content (textual, optional)
+
+## Setup & run
+
+```
+cp .env.example .env
+# Set APP_URL in .env
+composer install
+./vendor/bin/sail up -d &&
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan db:seed
+```
+
+And get a user token (for Authorization: Bearer xyz) at POST /api/v1/users/{1|2|3}/token.
