@@ -59,7 +59,7 @@ class NotePutTest extends TestCase
         $noteNewTitle = 'New title';
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->putJson("/api/v1/notes/1", [
+        $response = $this->actingAs($user)->putJson('/api/v1/notes/1', [
             'title' => $noteNewTitle,
             'content' => 'New content',
         ]);

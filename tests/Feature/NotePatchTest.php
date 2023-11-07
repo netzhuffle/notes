@@ -59,7 +59,7 @@ class NotePatchTest extends TestCase
         $noteNewTitle = 'New title';
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->patchJson("/api/v1/notes/1", [
+        $response = $this->actingAs($user)->patchJson('/api/v1/notes/1', [
             'title' => $noteNewTitle,
             'content' => 'New content',
         ]);

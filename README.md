@@ -14,7 +14,7 @@ The app was built based on the task description using the following design decis
     * Multiple users (reason: task description)
     * Each user has their own notes (reason: task description asks for having database relationships & constraints)
     * Notes have a (required) title and a (optional, text-only) content (leaving it to clients if they want to expose the title to the user as its own input field or as the first line of the note itself as well as if they like to use markdown or other formats as note content; reason: keeping note enumeration simple and performant, allowing empty notes to still require title for easy finding, and to demonstrate a contraint on database-level as well as validation on implementation-level which the task description asks for)
-    * Enumerating a user’s notes, paginated to 20 notes (GET /notes; reason: task description asks to demonstrate scalability & performance considerations)
+    * Enumerating a user’s notes, paginated to 20 notes newest first (GET /notes; reason: task description asks to demonstrate scalability & performance considerations)
     * Getting a user’s note (GET /notes/{id}; reason: while not part of task description, this makes sense for a full CRUD operation set)
     * Creating a new note (PUSH /notes; reason: task description)
     * Updating a note (PUT /notes/{id}; reason: task description)
