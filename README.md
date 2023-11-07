@@ -19,6 +19,7 @@ The app was built based on the task description using the following design decis
     * Creating a new note (PUSH /notes; reason: task description)
     * Updating a note (PUT /notes/{id}; reason: task description)
     * Deleting a note (DELETE /notes/{id}; reason: task description)
+    * Accessing a note of a different user returns a 404 (reason: prevent knowing note existance that would be possible by returning 403 for forbidden but 404 for not existing at all)
 * Out of scope (to avoid complexity beyond the task description and over-engineering):
     * New user registration or updating user settings
     * Note search, filtering, and sorting functionality
@@ -26,6 +27,7 @@ The app was built based on the task description using the following design decis
     * Note sharing with other users or the public
     * Note content versioning
     * Restoring deleted notes (e.g. trash folder functionality)
+    * Performant tests (only using integration tests using database for assuring full functionality)
 
 ## Database design
 

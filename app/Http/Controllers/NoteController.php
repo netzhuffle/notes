@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -28,7 +29,12 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        //
+        if ($note->user_id !== Auth::id()) {
+            // Returns 404 instead of 403 to prevent learning what notes exist.
+            abort(404);
+        }
+
+        return $note;
     }
 
     /**

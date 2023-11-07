@@ -11,6 +11,17 @@ class Note extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'title',
+        'content',
+    ];
+
+    /**
      * Get the user that owns the note.
      */
     public function user(): BelongsTo
