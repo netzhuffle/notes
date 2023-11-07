@@ -13,12 +13,18 @@ class NotePostTest extends TestCase
 
     public function test_unauthorised_returns_401(): void
     {
+        $noteTitle = 'Test note';
+        $noteContent = 'Test note content';
         $response = $this->postJson('/api/v1/notes', [
-            'title' => 'Test note',
-            'content' => 'Test note content',
+            'title' => $noteTitle,
+            'content' => $noteContent,
         ]);
 
         $response->assertStatus(401);
+        $this->assertDatabaseMissing('notes', [
+            'title' => $noteTitle,
+            'content' => $noteContent,
+        ]);
     }
 
     public function test_full_note_returns_201_and_note(): void
@@ -39,6 +45,11 @@ class NotePostTest extends TestCase
                 ->where('content', $noteContent)
                 ->etc()
             );
+        $this->assertDatabaseHas('notes', [
+            'user_id' => $user->id,
+            'title' => $noteTitle,
+            'content' => $noteContent,
+        ]);
     }
 
     public function test_title_only_returns_201_and_note(): void
@@ -57,6 +68,11 @@ class NotePostTest extends TestCase
                 ->where('content', null)
                 ->etc()
             );
+        $this->assertDatabaseHas('notes', [
+            'user_id' => $user->id,
+            'title' => $noteTitle,
+            'content' => null,
+        ]);
     }
 
     public function test_content_only_returns_422_and_message(): void
@@ -73,6 +89,9 @@ class NotePostTest extends TestCase
             ->assertJson([
                 'message' => 'The title field is required.',
             ]);
+        $this->assertDatabaseMissing('notes', [
+            'content' => $noteContent,
+        ]);
     }
 
     public function test_title_too_long_returns_422_and_message(): void
@@ -89,5 +108,8 @@ class NotePostTest extends TestCase
             ->assertJson([
                 'message' => 'The title field must not be greater than 255 characters.',
             ]);
+        $this->assertDatabaseMissing('notes', [
+            'title' => $noteTitle,
+        ]);
     }
 }
