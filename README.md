@@ -18,6 +18,7 @@ The app was built based on the task description using the following design decis
     * Getting a user’s note (GET /notes/{id}; reason: while not part of task description, this makes sense for a full CRUD operation set)
     * Creating a new note (PUSH /notes; reason: task description)
     * Updating a note (PUT /notes/{id}; reason: task description)
+    * Partially updating a note (PATCH /notes/{id}; reason: usually part of RESTful APIs)
     * Deleting a note (DELETE /notes/{id}; reason: task description)
     * Accessing a note of a different user returns a 404 (reason: prevent knowing note existance that would be possible by returning 403 for forbidden but 404 for not existing at all)
 * Out of scope (to avoid complexity beyond the task description and over-engineering):
@@ -28,6 +29,7 @@ The app was built based on the task description using the following design decis
     * Note content versioning
     * Restoring deleted notes (e.g. trash folder functionality)
     * Performant tests (only using integration tests using database for assuring full functionality)
+    * Laravel [API Resource transformation objects](https://laravel.com/docs/10.x/eloquent-resources#main-content) (for the chosen database model, sending all model data to the clients is fine, thus avoiding overengineering)
 
 ## Database design
 

@@ -14,16 +14,14 @@ class NotePostTest extends TestCase
     public function test_unauthorised_returns_401(): void
     {
         $noteTitle = 'Test note';
-        $noteContent = 'Test note content';
         $response = $this->postJson('/api/v1/notes', [
             'title' => $noteTitle,
-            'content' => $noteContent,
+            'content' => 'Test note content',
         ]);
 
         $response->assertStatus(401);
         $this->assertDatabaseMissing('notes', [
             'title' => $noteTitle,
-            'content' => $noteContent,
         ]);
     }
 

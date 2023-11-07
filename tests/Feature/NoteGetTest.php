@@ -13,13 +13,11 @@ class NoteGetTest extends TestCase
 
     public function test_unauthorised_returns_401(): void
     {
-        $noteTitle = 'Test note';
-        $noteContent = 'Test note content';
         $user = User::factory()->create();
         $note = Note::create([
             'user_id' => $user->id,
-            'title' => $noteTitle,
-            'content' => $noteContent,
+            'title' => 'Test note',
+            'content' => 'Test note content',
         ]);
 
         $response = $this->getJson("/api/v1/notes/$note->id");
