@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
+/** Integration tests for REST PATCH a note. */
 class NotePatchTest extends TestCase
 {
     use RefreshDatabase;

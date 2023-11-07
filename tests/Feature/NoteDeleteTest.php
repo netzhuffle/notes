@@ -7,28 +7,29 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-/** Integration tests for REST GET a note. */
-class NoteGetTest extends TestCase
+/** Integration tests for REST DELETE a note. */
+class NoteDeleteTest extends TestCase
 {
     use RefreshDatabase;
 
     public function test_unauthorised_returns_401(): void
     {
         $user = User::factory()->create();
-        $note = Note::create([
+        $note = Note::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Test note',
-            'content' => 'Test note content',
         ]);
 
-        $response = $this->getJson("/api/v1/notes/$note->id");
+        $response = $this->deleteJson("/api/v1/notes/$note->id");
 
         $response->assertStatus(401);
+        $this->assertDatabaseHas('notes', [
+            'id' => $note->id,
+        ]);
     }
 
     public function test_unauthorised_not_existing_returns_401(): void
     {
-        $response = $this->getJson('/api/v1/notes/1');
+        $response = $this->deleteJson('/api/v1/notes/1');
 
         $response->assertStatus(401);
     }
@@ -37,32 +38,26 @@ class NoteGetTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->getJson('/api/v1/notes/1');
+        $response = $this->actingAs($user)->deleteJson('/api/v1/notes/1');
 
         $response->assertStatus(404);
     }
 
-    public function test_success_returns_200_and_note(): void
+    public function test_success_returns_204(): void
     {
-        $noteTitle = 'Test note';
-        $noteContent = 'Test note content';
         $user = User::factory()->create();
-        $note = Note::create([
+        $note = Note::factory()->create([
             'user_id' => $user->id,
-            'title' => $noteTitle,
-            'content' => $noteContent,
         ]);
         $noteId = $note->id;
 
-        $response = $this->actingAs($user)->getJson("/api/v1/notes/$noteId");
+        $response = $this->actingAs($user)->deleteJson("/api/v1/notes/$noteId");
 
         $response
-            ->assertStatus(200)
-            ->assertJson([
-                'id' => $noteId,
-                'title' => $noteTitle,
-                'content' => $noteContent,
-            ]);
+            ->assertStatus(204);
+        $this->assertDatabaseMissing('notes', [
+            'id' => $noteId,
+        ]);
     }
 
     public function test_other_users_note_returns_404(): void
@@ -73,8 +68,11 @@ class NoteGetTest extends TestCase
             'user_id' => $otherUser->id,
         ]);
 
-        $response = $this->actingAs($user)->getJson("/api/v1/notes/$otherUsersNote->id");
+        $response = $this->actingAs($user)->deleteJson("/api/v1/notes/$otherUsersNote->id");
 
         $response->assertStatus(404);
+        $this->assertDatabaseHas('notes', [
+            'id' => $otherUsersNote->id,
+        ]);
     }
 }

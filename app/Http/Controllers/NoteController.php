@@ -38,10 +38,7 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        if ($note->user_id !== Auth::id()) {
-            // Returns 404 instead of 403 to prevent learning what notes exist.
-            abort(404);
-        }
+        $this->assureOwnership($note);
 
         return $note;
     }
@@ -51,10 +48,7 @@ class NoteController extends Controller
      */
     public function update(Request $request, Note $note)
     {
-        if ($note->user_id !== Auth::id()) {
-            // Returns 404 instead of 403 to prevent learning what notes exist.
-            abort(404);
-        }
+        $this->assureOwnership($note);
 
         if ($request->isMethod('PUT')) {
             $request->validate([
@@ -84,6 +78,24 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
-        //
+        $this->assureOwnership($note);
+
+        $note->delete();
+
+        return response()->noContent();
+    }
+
+    /**
+     * Assure a user owns the note.
+     *
+     * Aborts with 404 status otherwise.
+     *
+     * 404 was chosen instead of 403 to prevent malicious actors from learning what notes exist.
+     */
+    public function assureOwnership(Note $note): void
+    {
+        if ($note->user_id !== Auth::id()) {
+            abort(404);
+        }
     }
 }
